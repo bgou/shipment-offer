@@ -2,7 +2,6 @@ version: "3"
 services:
   db:
     image: mariadb
-    container_name: mariadb
     environment:
       MYSQL_DATABASE: offer
       MYSQL_ROOT_PASSWORD: "sa"
