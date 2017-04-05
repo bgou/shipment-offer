@@ -51,3 +51,22 @@ press Ctrl+C
 docker-compose down
 ```
 
+# Response to questions
+- What persistence solution did you choose and why?
+  - I chose SQL because the data seems highly relational. And having a relational database also allows for easier reporting for the business (compared to a NoSQL database).
+- What are some other ways you might score a driver?
+  - Shipper/Receiver feedback review - possibly a review system
+  - Timeliness of pickup and delivery
+  - Responsiveness to shipper/receiver inquiries
+  - and many others
+- What do you think are the best features to implement? When and why?
+  - **Push notification** (via app, sms, or email): when a shipment becomes available in a region, all of the available drivers in the region will get notified. This will continue to drive user engagement in our service, so I'd do this up front.
+  - **Real-time dashboard** would be super awesome (I know Meteor supports this with NoSQL) where users could see updated shipments without refreshing the web browser. But that's more on the front end though.
+  - **Bidding platform**: allows drivers to bid on the shipments, and allow shippers to set a most price they're willing to pay (ebay style). 
+- What would you add/change for a real-world v1 of this system?
+  - Ensure atomic transactions (so we don't offer the same shipment twice, etc)
+  - Caching. The logic to sort the drivers by number of previous accepted offers currently always do a SQL query and it is time consuming. The sorting already takes `O(N log N)` time, if we have millions more shipments it's not feasible to query all shipment data for each new shipment. For the caching we want something that can instantly tell how many shipments a driver has had in the past X number of days, and use that value to do sorting.
+  - More tests to cover each resource.
+  - Convert the business logic to a core processor package, and resources will use the processors to perform required business logic. This will separate handling the http request and the business logic, so that if we want to switch to a queue-based system we don't have to change a whole lot.
+  - More logging with better logging solution, probably ELK.
+  - Metrics. I have added a simple health check, but we should be able to do better than that.
